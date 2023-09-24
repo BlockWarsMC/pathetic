@@ -47,11 +47,12 @@ public class FailingSnapshotManager implements SnapshotManager {
         int chunkZ = position.getBlockZ() >> 4;
 
         if (chunkSnapshotOptional.isPresent()) {
-            PathBlockType pathBlockType = PathBlockType.fromMaterial(ChunkUtils.getMaterial(chunkSnapshotOptional.get(),
+            var material = ChunkUtils.getMaterial(chunkSnapshotOptional.get(),
                     position.getBlockX() - chunkX * 16,
                     position.getBlockY(),
-                    position.getBlockZ() - chunkZ * 16));
-            return Optional.of(new PathBlock(position, pathBlockType));
+                    position.getBlockZ() - chunkZ * 16);
+            PathBlockType pathBlockType = PathBlockType.fromMaterial(material);
+            return Optional.of(new PathBlock(position, pathBlockType, material));
         }
 
         return Optional.empty();
@@ -121,13 +122,13 @@ public class FailingSnapshotManager implements SnapshotManager {
             int chunkZ = pathPosition.getBlockZ() >> 4;
 
             ChunkSnapshot chunkSnapshot = retrieveSnapshot(pathPosition);
-            PathBlockType pathBlockType = PathBlockType
-                    .fromMaterial(ChunkUtils.getMaterial(chunkSnapshot,
-                            pathPosition.getBlockX() - chunkX * 16,
-                            pathPosition.getBlockY(),
-                            pathPosition.getBlockZ() - chunkZ * 16));
+            var material = ChunkUtils.getMaterial(chunkSnapshot,
+                    pathPosition.getBlockX() - chunkX * 16,
+                    pathPosition.getBlockY(),
+                    pathPosition.getBlockZ() - chunkZ * 16);
+            PathBlockType pathBlockType = PathBlockType.fromMaterial(material);
 
-            return new PathBlock(pathPosition, pathBlockType);
+            return new PathBlock(pathPosition, pathBlockType, material);
         }
 
         @Override

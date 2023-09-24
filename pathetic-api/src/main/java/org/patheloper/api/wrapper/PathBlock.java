@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.bukkit.Material;
 
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ public final class PathBlock {
 
     private final PathPosition pathPosition;
     private final PathBlockType pathBlockType;
+    private final Material material;
 
     /**
      * @return Whether the block is air
@@ -27,12 +29,20 @@ public final class PathBlock {
     }
 
     /**
+     * @return Returns the bukkit material of the block
+     */
+    public Material getMaterial() { return this.material; }
+
+    /**
      * @return Whether the block is possible to walk through
      */
     public boolean isPassable() {
         return isAir() || this.pathBlockType == PathBlockType.OTHER;
     }
 
+    /**
+     * @return Whether the block is solid
+     */
     public boolean isSolid() {
         return this.pathBlockType == PathBlockType.SOLID;
     }
